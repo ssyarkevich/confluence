@@ -10,8 +10,8 @@ chown -R nginx:nginx /etc/nginx/sites-available/confluence.ssyarkev.com
 chown -R nginx:nginx /etc/nginx/
 ln -s /etc/nginx/sites-available/confluence.ssyarkev.com /etc/nginx/sites-enabled/confluence.ssyarkev.com
 #rm /etc/nginx/sites-enabled/default
-echo 0 > /sys/fs/selinux/enforce
-#systemctl restart nginx
+setenforce 0
+systemctl enable nginx
 echo "================================================================================================"
 echo "Moving on...."
 if [ ! -f ./atlassian-confluence-6.2.1-x64.bin ]; then
@@ -21,6 +21,6 @@ fi
 #curl --remote-name -# --location https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-6.2.1-x64.bin
 chmod a+x atlassian-confluence-6.2.1-x64.bin # && cp /vagrant/response.varfile .
 sudo ./atlassian-confluence-6.2.1-x64.bin -q varfile response.varfile
-cat ./vagrant/server.xml > /opt/Confluence/conf/server.xml
+cat /vagrant/server.xml > /opt/Confluence/conf/server.xml
 /etc/init.d/confluence stop && /etc/init.d/confluence start
 systemctl restart nginx

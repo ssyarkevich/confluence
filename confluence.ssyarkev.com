@@ -1,5 +1,5 @@
 server {
-    listen www.confluence.ssyarkev.com:80;
+    listen 80;
     server_name www.confluence.ssyarkev.com confluence.ssyarkev.com;
  
     listen 443 default ssl;
