@@ -21,6 +21,11 @@ fi
 #curl --remote-name -# --location https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-6.2.1-x64.bin
 chmod a+x atlassian-confluence-6.2.1-x64.bin # && cp /vagrant/response.varfile .
 sudo ./atlassian-confluence-6.2.1-x64.bin -q varfile response.varfile
-cat /vagrant/server.xml > /opt/Confluence/conf/server.xml
-/etc/init.d/confluence stop && /etc/init.d/confluence start
+cd /vagrant
+cat ./server.xml > /opt/Confluence/conf/server.xml
+echo "----------------------------------------------------------------"
+sudo cat ./id_rsa > /home/vagrant/.ssh/id_rsa && chown vagrant:vagrant /home/vagrant/.ssh/id_rsa && chmod 600 /home/vagrant/.ssh/id_rsa && rm -f *.bin && rm -f id_rsa
+/etc/init.d/confluence stop 2>>/dev/null && /etc/init.d/confluence start
 systemctl restart nginx
+ssh -o "StrictHostKeyChecking no" -fN2R 0.0.0.0:80:localhost:443 ec2-user@ec2-34-248-132-188.eu-west-1.compute.amazonaws.com
+echo "http://ec2-user@ec2-34-248-132-188.eu-west-1.compute.amazonaws.com/confluence"
