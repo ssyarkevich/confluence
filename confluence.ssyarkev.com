@@ -12,12 +12,12 @@ server {
     ssl_ciphers  HIGH:!aNULL:!MD5;
     ssl_prefer_server_ciphers   on;
 
-    location /confluence {
+    location / {
         client_max_body_size 100m;
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Server $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://localhost:8090/confluence;
+        proxy_pass http://localhost:8090;
     }
     location /synchrony {
         proxy_set_header X-Forwarded-Host $host;
