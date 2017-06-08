@@ -33,11 +33,16 @@ chmod 600 /home/vagrant/.ssh/id_rsa
 mkdir /etc/mysql && cp /vagrant/my.cnf /etc/mysql
 echo "*************************************************************************************************"
 #docker run --name MYSQL -v /my/custom:/etc/mysql/conf.d -p 3306:3306 -e MYSQL_RANDOM_ROOT_PASSWORD=yes -d mysql
+docker run --name MYSQL -d -p 3306:3306 -v /vagrant:/root -e MYSQL_ROOT_PASSWORD=the_root_pw -e MYSQL_ROOT_HOST=172.17.0.1 mysql/mysql-server:5.6.36
+docker exec MYSQL /bin/sh -c 'mysql -u root -pthe_root_pw < /root/create_db.sql'
 #docker logs MYSQL |grep "GENERATED"
+#https://hub.docker.com/r/mysql/mysql-server/
 echo "*************************************************************************************************"
+mkdir /var/log/attachments && mkdir /var/log/backups && chown -R confluence /var/log/attachments && chown -R confluence /var/log/backups
 #rm -f *.bin && rm -f id_rsa
 /etc/init.d/confluence stop 2>>/dev/null && /etc/init.d/confluence start
 systemctl restart nginx
-sudo ssh -i /home/vagrant/.ssh/id_rsa -o StrictHostKeyChecking=no -f2NR 0.0.0.0:443:localhost:443 root@ec2-52-48-122-211.eu-west-1.compute.amazonaws.com
+sudo ssh -i /home/vagrant/.ssh/id_rsa -o StrictHostKeyChecking=no -f2NR 0.0.0.0:443:localhost:443 root@ec2-52-213-125-88.eu-west-1.compute.amazonaws.com
 
-echo "ec2-52-215-75-94.eu-west-1.compute.amazonaws.com:2222/confluence"
+
+#docker run -d -p 3306:3306 -v /vagrant:/root -e MYSQL_ROOT_PASSWORD=the_root_pw -e MYSQL_ROOT_HOST=172.17.0.1 mysql/mysql-server:5.6.36
